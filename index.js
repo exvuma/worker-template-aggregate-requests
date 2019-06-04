@@ -1,23 +1,23 @@
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
+    event.respondWith(handleRequest(event.request))
 })
 
 /** Example endpoints and expected results */
 const ENDPOINTS = [
-  { type: 'BTC', url: 'https://api.coinbase.com/v2/prices/BTC-USD/spot' },
-  { type: 'ETH', url: 'https://api.coinbase.com/v2/prices/ETH-USD/spot' },
-  { type: 'LTC', url: 'https://api.coinbase.com/v2/prices/LTC-USD/spot' },
+    { type: 'BTC', url: 'https://api.coinbase.com/v2/prices/BTC-USD/spot' },
+    { type: 'ETH', url: 'https://api.coinbase.com/v2/prices/ETH-USD/spot' },
+    { type: 'LTC', url: 'https://api.coinbase.com/v2/prices/LTC-USD/spot' },
 ]
 
 const fromAPIResult = [
-  { data: { base: 'BTC', amount: '7586.0' } },
-  { data: { base: 'ETH', amount: '236.435' } },
-  { data: { base: 'LTC', amount: '99.875' } },
+    { data: { base: 'BTC', amount: '7586.0' } },
+    { data: { base: 'ETH', amount: '236.435' } },
+    { data: { base: 'LTC', amount: '99.875' } },
 ]
 const endResult = [
-  { type: 'BTC', amount: '7586.0' },
-  { type: 'ETH', amount: '236.435' },
-  { type: 'LTC', amount: '99.875' },
+    { type: 'BTC', amount: '7586.0' },
+    { type: 'ETH', amount: '236.435' },
+    { type: 'LTC', amount: '99.875' },
 ]
 
 /**
@@ -29,13 +29,13 @@ const endResult = [
  * @param {string} endpoint
  */
 async function fetchEndpoint(endpoint) {
-  const res = await fetch(endpoint.url)
-  const json = await res.json()
-  const currency = json.data
-  return {
-    base: currency.base,
-    amount: currency.amount,
-  }
+    const res = await fetch(endpoint.url)
+    const json = await res.json()
+    const currency = json.data
+    return {
+        base: currency.base,
+        amount: currency.amount,
+    }
 }
 
 /**
@@ -45,14 +45,14 @@ async function fetchEndpoint(endpoint) {
  * @param {*} endpoints
  */
 async function fetchResponses(request, endpoints) {
-  const responses = await Promise.all(endpoints.map(fetchEndpoint))
-  const responseInit = {
-    headers: { 'Content-Type': 'application/json' },
-  }
+    const responses = await Promise.all(endpoints.map(fetchEndpoint))
+    const responseInit = {
+        headers: { 'Content-Type': 'application/json' },
+    }
 
-  return new Response(JSON.stringify(responses), responseInit)
+    return new Response(JSON.stringify(responses), responseInit)
 }
 
 async function handleRequest(request) {
-  return fetchResponses(request, ENDPOINTS)
+    return fetchResponses(request, ENDPOINTS)
 }
